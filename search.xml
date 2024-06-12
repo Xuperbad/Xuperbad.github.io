@@ -201,17 +201,6 @@
       </tags>
   </entry>
   <entry>
-    <title>系统设计的一般结构</title>
-    <url>/2024/06/11/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%B8%80%E8%88%AC%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h1 id="何谓系统"><a href="#何谓系统" class="headerlink" title="何谓系统"></a>何谓系统</h1><h1 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h1><h1 id="一般结构"><a href="#一般结构" class="headerlink" title="一般结构"></a>一般结构</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><h2 id="数值预期"><a href="#数值预期" class="headerlink" title="数值预期"></a>数值预期</h2><h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><h2 id="美术"><a href="#美术" class="headerlink" title="美术"></a>美术</h2><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h2 id="打点"><a href="#打点" class="headerlink" title="打点"></a>打点</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2>]]></content>
-      <categories>
-        <category>article</category>
-      </categories>
-      <tags>
-        <tag>游戏系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数值实践的一些总结</title>
     <url>/2024/06/12/%E6%95%B0%E6%8D%AE%E5%8F%98%E5%8C%96%E5%BE%97%E5%A4%B1/</url>
     <content><![CDATA[<p>尝试数值改版后，得出的一些经验与总结<br>数值改版实践见：<a href="/2024/06/11/%E6%95%B0%E5%80%BC%E5%BA%95%E5%B1%82%E6%90%AD%E5%BB%BA%E5%AE%9E%E8%B7%B5/" title="数值底层搭建实践">数值底层搭建实践</a></p>
@@ -926,6 +915,17 @@
       </categories>
       <tags>
         <tag>游戏数值</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>系统设计的一般结构</title>
+    <url>/2024/06/11/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E7%9A%84%E4%B8%80%E8%88%AC%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h1 id="何谓系统"><a href="#何谓系统" class="headerlink" title="何谓系统"></a>何谓系统</h1><h1 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h1><h1 id="一般结构"><a href="#一般结构" class="headerlink" title="一般结构"></a>一般结构</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><h2 id="数值预期"><a href="#数值预期" class="headerlink" title="数值预期"></a>数值预期</h2><h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><h2 id="美术"><a href="#美术" class="headerlink" title="美术"></a>美术</h2><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h2 id="打点"><a href="#打点" class="headerlink" title="打点"></a>打点</h2><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2>]]></content>
+      <categories>
+        <category>article</category>
+      </categories>
+      <tags>
+        <tag>游戏系统</tag>
       </tags>
   </entry>
 </search>
