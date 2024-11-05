@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="John Doe">
+
+
+
+
+
+
+
+<title>数值底层搭建实践 | Hexo</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Roboto+Mono&display=swap');
+</style>
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/menu.js"></script>
+    
+
+
+
+
+
+
+
+
+
+
+  <meta name="generator" content="Hexo 7.2.0"></head>
+  <body>
+    <div class="mask-border">
+    </div>
+
+    <div class="wrapper">
+
+      <div class="header">
+  <div class="flex-container">
+    <div class="header-inner">
+      <div class="site-brand-container">
+        <a href="/">
+          
+            XuperBad🦹
+          
+        </a>
+      </div>
+      <div id="menu-btn" class="menu-btn" onclick="toggleMenu()">
+        Menu
+      </div>
+      <nav class="site-nav">
+        <ul class="menu-list">
+          
+            
+              <li class="menu-item">
+                <a href="/">HP❤️+1</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/archives/">ATK🗡️+1</a>
+              </li> 
+                   
+          
+            
+              <li class="menu-item">
+                <a href="/categories/article/">EXP⭐+1</a>
+              </li> 
+                   
+          
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main">
+        <div class="flex-container">
+          <article id="post">
+
+  
+    <div class="post-head">
+    <div class="post-info">
+        <div class="tag-list">
+            
+                
+                    <span class="post-tag">
+                        <a href="/tags/%E6%B8%B8%E6%88%8F%E6%95%B0%E5%80%BC/">
+                            游戏数值
+                        </a>
+                    </span>    
+                           
+            
+        </div>
+        <div class="post-title">
+            
+            
+                数值底层搭建实践
+            
+            
+        </div>
+        <span class="post-date">
+            Jun 11, 2024
+        </span>
+    </div>
+    <div class="post-img">
+        
+            <img src="/images/%E6%95%B0%E5%80%BC%E5%BA%95%E5%B1%82.jpeg" alt="featured_image">
+              
+    </div>
+</div>
+    <div class="post-content">
+    <p>（基于过往项目，仅供参考）</p>
+<h1 id="一、预期"><a href="#一、预期" class="headerlink" title="一、预期"></a>一、预期</h1><p>本文提供了一种战斗的搭建思路，尝试建立一个可以任意投放属性（暴力性破坏）并保持战斗的相对稳态的战斗体系。在这个体系的基础上，引入装备词条投放规则，及各养成线释放节奏，通过模拟实际战斗，来保证了底层数值框架的坚固。</p>
+<ol>
+<li>该文章主要两大部分内容：<ul>
+<li><strong>基础设定</strong>：整理说明基本战斗及装备属性。以作后续迭代开发备份。该部分内容会较详尽，且会是具体说明+数值等。</li>
+<li><strong>战斗搭建思路</strong>：介绍各项数值的设定，及如何计算&#x2F;模拟获取这些数值，这些数值的体验、程度、平衡如何。该部分内容以说明加配图（指明在谷歌表格中所在位置），具体公式及计算模拟需要去谷歌表格中查看，重在于讲清<strong>简单战斗搭建的逻辑及大致设定思路</strong>。</li>
+</ul>
+</li>
+<li>另外，介绍 index 中补充的等级-战力-各产出消耗的计算，后续新系统&#x2F;玩法的数值需求、各商品价值需要基于该框架进行设计。<ul>
+<li><strong>新系统&#x2F;玩法</strong>需要确定什么阶段带入游戏，此时玩家一般战力情况如何，才好确定该投放多少数值在该模块中，既不太小无感，也不太大失衡。</li>
+<li><strong>各商品价值</strong>需要确定在什么阶段进行售卖，玩家此时战力及售卖的战力相比如何，才比较好对价值进行定量，避免价格失常。</li>
+</ul>
+</li>
+</ol>
+<h1 id="二、说明"><a href="#二、说明" class="headerlink" title="二、说明"></a>二、说明</h1><ol>
+<li>文档地址<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1aQfAiQBEjIMaWUX_ehUnVr37z7y9VmRwRxDBaJxOGP8/edit#gid=0">新版战斗数值文档⭐</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1gevk4SKorgXRR_ceoiiiDV_DlAWM4pRGdXIJ6PawWE8/edit#gid=1405120070">旧版文档</a></li>
+</ul>
+</li>
+<li>表名的说明<ul>
+<li>A、B、C、D表指<strong>大模块</strong>。C1、C2表指<strong>C表下的子表</strong>。<img src="/images/dcsz-1.png"></li>
+</ul>
+</li>
+<li>表中标题的说明<ul>
+<li>表中黑底白字 2b1、前缀概率及系数设定 的2b1 指步骤顺序，即排在1之后，且在2a之后，且在2b2之前。<a href="/images/dcsz-2.png"></a></li>
+</ul>
+</li>
+<li>表中格子颜色的说明<ul>
+<li><strong>深灰</strong> 表示 具有公式，不需要被关注的部分，或者废弃无关的内容。</li>
+<li><strong>亮黄</strong> 表示 自由填入数值，一般用于自动生成各种对应数据。</li>
+<li><strong>黑</strong> 表示 主要模块</li>
+<li><strong>浅蓝、浅红</strong> 表示 表格标头</li>
+</ul>
+</li>
+</ol>
+<h1 id="三、基础设定"><a href="#三、基础设定" class="headerlink" title="三、基础设定"></a>三、基础设定</h1><h2 id="3-1-战斗"><a href="#3-1-战斗" class="headerlink" title="3.1 战斗"></a>3.1 战斗</h2><h3 id="伤害流程发起"><a href="#伤害流程发起" class="headerlink" title="伤害流程发起"></a>伤害流程发起</h3><ol>
+<li>维持原有战斗逻辑。</li>
+<li>即，每次攻击触发三颗子弹（三种伤害），对应物攻A、冰攻B、火攻C。</li>
+</ol>
+<h3 id="总伤害计算"><a href="#总伤害计算" class="headerlink" title="总伤害计算"></a>总伤害计算</h3><p><code>（dmgSum = dmgA * dmgA% + dmgB * dmgB% + dmgC * dmgC%）</code></p>
+<ol>
+<li>基本伤害计算（dmgX）<ul>
+<li>物攻 dmgA&#x3D;(atk*paramAtk)&#x2F;(def+paramAtk)；其中atk为攻方的攻击，def为守方的防御，paramAtk为攻方的攻击参数（命名为增伤或强度）。</li>
+<li>冰攻、火攻时，dmgB&#x3D;atkI 或者 dmgC&#x3D;atkF</li>
+<li>玩家不同等级会产出一定的强度、穿透、抵抗，构成战斗的基本框架。</li>
+</ul>
+</li>
+<li>减伤率计算（dmgX%）<ul>
+<li>dmg%&#x3D;a&#x2F;(a+b)&#x3D;1-b&#x2F;(a+b)</li>
+<li>a 为总穿透&#x3D;基础穿透+对应攻击类型的穿透。b 为总抗性&#x3D;基础抗性+对应攻击类型的抗性，即物攻的dmgA%，a&#x3D;pierce+pierceP，且守方取 b&#x3D;resist+resistP。dmgA%&#x3D;a&#x2F;(a+b)。</li>
+</ul>
+</li>
+</ol>
+<h3 id="会心计算"><a href="#会心计算" class="headerlink" title="会心计算"></a>会心计算</h3><ol>
+<li>会心 critical，会抗 criticalResist，会伤 criticalPower</li>
+<li>触发概率为 critical-criticalResist</li>
+<li>触发会心后，最终伤害计算 final_dmg&#x3D;dmgSum*(1.5+criticalPower)</li>
+</ol>
+<h3 id="伤害流程结算"><a href="#伤害流程结算" class="headerlink" title="伤害流程结算"></a>伤害流程结算</h3><ol>
+<li>受击方剩余血量小于攻方吸血量时，实际的吸血量&#x3D;剩余血量</li>
+<li>反伤同理</li>
+</ol>
+<h2 id="3-2-属性"><a href="#3-2-属性" class="headerlink" title="3.2 属性"></a>3.2 属性</h2><h3 id="属性分类"><a href="#属性分类" class="headerlink" title="属性分类"></a>属性分类</h3><ol>
+<li>基本属性。<ul>
+<li>生命、防御、三种攻击、三种穿透、三种抵抗。（可以减少为五种：生、防、攻、穿、抗）</li>
+<li>强度、穿透、抵抗。（构成战斗基本框架，保证各等级段的战斗标准，及高等级与低等级的战斗优势）</li>
+<li>构成装备的主属性。战斗的核心框架也由这五种属性此消彼涨来构成，即装备build的玩点。</li>
+</ul>
+</li>
+<li>特殊属性。<ul>
+<li>百分比类属性。会心、会抗、会伤、反伤、吸取、速度。</li>
+</ul>
+</li>
+</ol>
+<h3 id="属性作用方式"><a href="#属性作用方式" class="headerlink" title="属性作用方式"></a>属性作用方式</h3><ol>
+<li>属性加成：绝对值加成、百分比加成。</li>
+<li>属性作用逻辑<ul>
+<li>由装备得到基本属性，根据统计方式区分为两个概念：<ul>
+<li>装备属性：归属于不同装备的属性最终值。</li>
+<li>角色属性：各项属性累和的最终值。</li>
+</ul>
+</li>
+<li>其余系统均仅作用于这两者。不会互相相乘。例如，<ul>
+<li>共鸣套装，针对装备的同一副属性进行操作。<br><img src="/images/dcsz-3.png"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="战力的计算"><a href="#战力的计算" class="headerlink" title="战力的计算"></a>战力的计算</h3><ol>
+<li>玩家<ul>
+<li>角色总战力&#x3D;所有装备总战力累和。</li>
+<li>单件装备的总战力&#x3D;基本属性总战力+特殊属性总战力。<ul>
+<li>单件装备的基本属性战力为属性数值*属性单位战力（绝对值）。所有基本属性总战力为基本属性战力base。</li>
+<li>单件装备的特殊属性战力为战力base*属性单位战力（百分比）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>怪物<ul>
+<li>同上述，即基础值*百分比。整个怪物视为一件装备去计算。</li>
+</ul>
+</li>
+</ol>
+<h1 id="四、战斗搭建思路"><a href="#四、战斗搭建思路" class="headerlink" title="四、战斗搭建思路"></a>四、战斗搭建思路</h1><p>见：<a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1gevk4SKorgXRR_ceoiiiDV_DlAWM4pRGdXIJ6PawWE8/edit#gid=1405120070">谷歌战斗数值文档</a></p>
+<h2 id="4-1-「C战斗设定」（模拟实际战斗、通过模拟调整战斗相关内容）"><a href="#4-1-「C战斗设定」（模拟实际战斗、通过模拟调整战斗相关内容）" class="headerlink" title="4.1 「C战斗设定」（模拟实际战斗、通过模拟调整战斗相关内容）"></a>4.1 「C战斗设定」（模拟实际战斗、通过模拟调整战斗相关内容）</h2><ol>
+<li>取“单份属性”作讨论的基本数值单位。每份不同属性的数值是不同的，但对战斗的贡献是相同的。<br><img src="/images/dcsz-4.png"></li>
+<li>完整模拟任意属性下的战斗。填入各属性份数，得到完整战斗的模拟结果，包括现在版本的吸取、反伤、会心逻辑。<br><img src="/images/dcsz-5.png"></li>
+<li>批量模拟战斗。对于概率属性（会心类），可以更真实得到这类属性在战斗里的实际价值。可以用表格中的宏执行模拟1000次以上战斗。<br><img src="/images/dcsz-6.png"></li>
+<li><strong>模拟实际战斗</strong>。在有限格子里，置入随机或指定品阶和等级装备，因为装备是整份数值，这种模拟更接近实际战斗体验。装备可以在D表中获取，直接copy置入。核心玩法也在此处，不同装备构成得到的战斗结果都不同，但整体控制在8秒左右的战斗时长。也可以验证不同装备风格、不同重铸强度玩家的战斗体验。<br><img src="/images/dcsz-7.png"></li>
+</ol>
+<h2 id="4-2-「C1怪物数值」（产出怪物各等级战力，调节与玩家战力差距来营造通关体验）"><a href="#4-2-「C1怪物数值」（产出怪物各等级战力，调节与玩家战力差距来营造通关体验）" class="headerlink" title="4.2 「C1怪物数值」（产出怪物各等级战力，调节与玩家战力差距来营造通关体验）"></a>4.2 「C1怪物数值」（产出怪物各等级战力，调节与玩家战力差距来营造通关体验）</h2><ol>
+<li>产出不同等级的怪物数值及战力（怪物实际属性&#x3D;怪物类型模板*怪物基础等级属性）<br><img src="/images/dcsz-8.png"></li>
+<li>穿、抗、强构成各等级区间内基本战斗框架，产出玩家的框架性属性。<br><img src="/images/dcsz-9.png"></li>
+</ol>
+<h2 id="4-3-「D装备设定」（设定装备核心玩法、模拟装备生成、保证各数值的合理性）"><a href="#4-3-「D装备设定」（设定装备核心玩法、模拟装备生成、保证各数值的合理性）" class="headerlink" title="4.3 「D装备设定」（设定装备核心玩法、模拟装备生成、保证各数值的合理性）"></a>4.3 「D装备设定」（设定装备核心玩法、模拟装备生成、保证各数值的合理性）</h2><ol>
+<li>调整品阶、合成消耗及价值。设定各品阶的词条抽取逻辑。<br><img src="/images/dcsz-10.png"></li>
+<li>设定前缀（重复抽取词条会获取前缀），讨论各前缀数值及概率。前缀数值会影响最终战力数值的波动及体验（即上下限）。概率由大批量数据模拟计算得到。<br><img src="/images/dcsz-11.png"><br><img src="/images/dcsz-12.png"></li>
+<li>设定词条及装备的词条池。装备构成均为：主属性，普通词条（三攻&#x2F;三防&#x2F;三抗+基本属性），特殊词条（全加成+单个加成+特殊属性）。界面表现上普通词条可以考虑简化为攻击+强度，四条变两条。点详情时才展开为四条。界面上会进一步简化显示。<br><img src="/images/dcsz-13.png"><br><img src="/images/dcsz-14.png"></li>
+<li>设定词条数值。需要保证对战力的提升是大体一致的。<br><img src="/images/dcsz-15.png"></li>
+<li>模拟装备实际情况。填入品阶、等级、类型等，可以得到装备的实际结果，查看各词条数值占比，调整不同阶段装备的数值产出，也是游戏的基本成长节奏。<br><img src="/images/dcsz-16.png"></li>
+<li>批量生成装备。可以查看装备的数值波动。<br><img src="/images/dcsz-17.png"></li>
+<li>讨论常见的（各前缀*各词条）组合的战力及概率，验证装备各系数是否合理。调整了新版数值暂未更新上。<br><img src="/images/dcsz-18.png"></li>
+<li>得到装备的平均期望战力。通过各品阶装备的平均主属性占比，来大致估算玩家装备的一般战力情况。<br><img src="/images/dcsz-19.png"></li>
+<li>调整合成规则及对应的品阶系数、等级系数。<br><img src="/images/dcsz-20.png"><br><img src="/images/dcsz-21.png"></li>
+</ol>
+<h2 id="4-4-「D1前缀模拟」（模拟枚举前缀-词条组合情况，保证对应的产出强度及获取难度相适配）"><a href="#4-4-「D1前缀模拟」（模拟枚举前缀-词条组合情况，保证对应的产出强度及获取难度相适配）" class="headerlink" title="4.4 「D1前缀模拟」（模拟枚举前缀+词条组合情况，保证对应的产出强度及获取难度相适配）"></a>4.4 「D1前缀模拟」（模拟枚举前缀+词条组合情况，保证对应的产出强度及获取难度相适配）</h2><ol>
+<li>模拟随机放球。<br><img src="/images/dcsz-22.png"></li>
+<li>汇总所有组合情况。<br><img src="/images/dcsz-23.png"></li>
+<li>保证数值强度与产出难度相适配。难获得的相对强度高，且高阶前缀大于低阶前缀。<br><img src="/images/dcsz-24.png"></li>
+</ol>
+<h2 id="4-5-「D3数值方案」（对比不同系数产出的数值结果，调整核心数值的成长体验）"><a href="#4-5-「D3数值方案」（对比不同系数产出的数值结果，调整核心数值的成长体验）" class="headerlink" title="4.5 「D3数值方案」（对比不同系数产出的数值结果，调整核心数值的成长体验）"></a>4.5 「D3数值方案」（对比不同系数产出的数值结果，调整核心数值的成长体验）</h2><ol>
+<li>特殊词条里不同属性加成百分比的战力对比<br><img src="/images/dcsz-25.png"></li>
+<li>整体降低前缀系数的效果。暂未更新上。<br><img src="/images/dcsz-26.png"></li>
+<li>各品阶装备的数值情况。有固定等级、适配等级两种形式。可以查看不同品阶装备的战力变化、战力整体体验变化、主属性占比变化。<br><img src="/images/dcsz-27.png"></li>
+<li>讨论词条锁定的战力变化情况。暂未更新。<br><img src="/images/dcsz-28.png"></li>
+<li>各品阶装备战力情况。每品阶下采集30组数据，图中有省略。需要关注数据离散、主属性占比均值、极限值等，对应合成当前品阶装备的体验，是否词条的差异有所感知，是否合理控制全重铸的极限情况等。<br><img src="/images/dcsz-29.png"></li>
+<li>满重铸满词条的数值提升设计为28%，即满重铸下，领先一般装备28%的战力。<br><img src="/images/dcsz-30.png"></li>
+</ol>
+<h1 id="五、等级战力框架"><a href="#五、等级战力框架" class="headerlink" title="五、等级战力框架"></a>五、等级战力框架</h1><p>见：<a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1Cn9cvZXIL9_zaFm2bwIS9nO3sQeX65fYHTJu87xyoVM/edit#gid=696817483">谷歌index整合文档</a></p>
+<ol>
+<li>该部分会迁移至index表中playerLevel页直接计算，会把所有各个模块的产出消耗、对战力的贡献及各等级对应的玩家战力算清楚，给出一个一般 等级&amp;战力 框架。少量原有计算有所优化。</li>
+<li>如何使用？<ul>
+<li>各等级及游戏时间下有个可参考的战力标准，便于做内容时讨论。</li>
+<li>新增战斗或成长相关的内容需要基于该框架来投放数值。</li>
+<li>投放完数值后，需要并入框架计算。</li>
+</ul>
+</li>
+<li>框架验证<ul>
+<li>合流完成后填入各系统的数值，然后需要测试和验证框架是否正确，调整。</li>
+</ul>
+</li>
+<li>系统兼容处理<ul>
+<li>雕像、赋能、公会属性、称号属性需要根据该框架来进行调整。</li>
+<li>原有付费礼包等基于框架重新调整。</li>
+</ul>
+</li>
+</ol>
+
+</div> 
+
+<script>
+    window.onload = detectors();
+</script>
+    <div class="post-footer">
+    <div class="h-line-primary"></div>
+    <nav class="post-nav">
+        <div class="prev-item">
+           
+                <div class="icon arrow-left"></div>
+                <div class="post-link">
+                    <a href="/2024/06/12/%E6%95%B0%E6%8D%AE%E5%8F%98%E5%8C%96%E5%BE%97%E5%A4%B1/">Prev</a>
+                </div>
+            
+        </div>
+        <div class="next-item">
+            
+                <div class="icon arrow-right"></div>
+                <div class="post-link">
+                  <a href="/2024/06/11/%E6%B8%B8%E6%88%8F%E4%B8%AD%E5%95%86%E5%93%81%E4%BB%B7%E6%A0%BC%E7%9A%84%E8%AE%A8%E8%AE%BA/">Next</a>  
+                </div>  
+            
+        </div>
+    </nav>
+</div>
+
+    
+      <div class="post-comment">
+
+     
+
+     
+    
+    
+
+</div>
+     
+  
+</article>
+        </div>
+      </div>
+      
+      <div class="footer">
+    <div class="flex-container">
+        <div class="footer-text">
+            
+            
+                陈宇超🍷 | 
+            
+            
+                Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> & <a target="_blank" rel="noopener" href="https://github.com/zoeingwingkei/frame/">Frame</a>
+                
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+    
+
+  </body>
+</html>
